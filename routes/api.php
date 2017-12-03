@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,6 +73,30 @@ $api->version('v1', [
         $api->post('posts', [
             'as' => 'api.posts.store',
             'uses' => 'PostController@store',
+        ]);
+    });
+});
+
+
+$api->version('admin_v1', [
+    'namespace' => 'App\Http\Controllers\Admin',
+], function ($api) {
+    // Admin register
+    $api->post('admin', [
+        'as' => 'admin.store',
+        'uses' => 'AdminController@store',
+    ]);
+    //Admin login
+    $api->post('authorizations', [
+        'as' => 'admin.authorizations.store',
+        'uses' => 'AuthorizationController@store',
+    ]);
+
+    $api->group(['middleware' => ['api.auth','auth.admin']], function ($api) {
+        //获取当前管理员信息
+        $api->get('admin', [
+            'as' => 'api.admin.show',
+            'uses' => 'AdminController@adminShow'
         ]);
     });
 });
