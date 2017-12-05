@@ -7,6 +7,7 @@ use App\Http\Transformers\AdminTransformer;
 use App\Models\Admin;
 use App\Models\Authorization;
 use Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -21,7 +22,7 @@ class AdminController extends Controller
             'password' => app('hash')->make($input['password']),
         ];
         $admin = Admin::create($attributes);
-        $authorization = new Authorization(Auth::guard('admin')->fromUser($admin));
+        $authorization = new Authorization(Auth::fromUser($admin));
         $transformer = new AdminTransformer();
         $transformer->setAuthorization($authorization)->setDefaultIncludes(['authorization']);
 
@@ -31,6 +32,9 @@ class AdminController extends Controller
 
     public function adminShow()
     {
-        return $this->response->item(Auth::guard('admin')->user(), new AdminTransformer());
+        /*if (!Gate::allows('users_manage')) {
+            return abort(401, '无访问权限');
+        }*/
+        return $this->response->item($this->user(), new AdminTransformer());
     }
 }

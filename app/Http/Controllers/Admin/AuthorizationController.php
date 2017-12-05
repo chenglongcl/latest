@@ -43,7 +43,7 @@ class AuthorizationController extends Controller
             'name' => $input['name'],
             'password' => $input['password'],
         ];
-        if (!$token = Auth::guard('admin')->attempt($credentials)) {
+        if (!$token = Auth::attempt($credentials)) {
             abort(401, '用户名或密码错误');
         }
         $authorization = new Authorization($token);

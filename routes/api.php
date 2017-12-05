@@ -80,6 +80,7 @@ $api->version('v1', [
 
 $api->version('admin_v1', [
     'namespace' => 'App\Http\Controllers\Admin',
+    'middleware' => ['jwt.user.toAdmin']
 ], function ($api) {
     // Admin register
     $api->post('admin', [
@@ -92,7 +93,7 @@ $api->version('admin_v1', [
         'uses' => 'AuthorizationController@store',
     ]);
 
-    $api->group(['middleware' => ['api.auth','auth.admin']], function ($api) {
+    $api->group(['middleware' => ['api.auth', 'auth.admin']], function ($api) {
         //获取当前管理员信息
         $api->get('admin', [
             'as' => 'api.admin.show',

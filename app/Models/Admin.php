@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 class Admin extends Authenticatable implements JWTSubject
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasRolesAndAbilities;
 
     /**
      * The attributes that are mass assignable.
@@ -46,7 +47,7 @@ class Admin extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return ["role" => $this->role ];
+        return ["role" => $this->role];
     }
 
 }
