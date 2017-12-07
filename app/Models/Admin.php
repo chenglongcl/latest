@@ -18,7 +18,7 @@ class Admin extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role',
+        'name', 'email', 'password', 'is_admin',
     ];
 
     /**
@@ -47,7 +47,7 @@ class Admin extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return ["role" => $this->role];
+        return ["is_admin" => $this->is_admin];
     }
 
 }

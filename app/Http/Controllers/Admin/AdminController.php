@@ -14,11 +14,11 @@ class AdminController extends Controller
 
     public function store(StoreAdminRequest $request)
     {
-        $input = $request->only('name', 'email', 'password', 'role');
+        $input = $request->only('name', 'email', 'password', 'is_admin');
         $attributes = [
             'name' => $input['name'],
             'email' => $input['email'],
-            'role' => $input['role'],
+            'is_admin' => $input['is_admin'],
             'password' => app('hash')->make($input['password']),
         ];
         $admin = Admin::create($attributes);
@@ -32,8 +32,8 @@ class AdminController extends Controller
 
     public function adminShow()
     {
-        /*if (!Gate::allows('users_manage')) {
-            return abort(401, '无访问权限');
+        /*if (Gate::allows('users_manage')) {
+            return abort(401, trans('msg.no_abilitie'));
         }*/
         return $this->response->item($this->user(), new AdminTransformer());
     }

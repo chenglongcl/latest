@@ -56,6 +56,16 @@ $api->version('v1', [
         'uses' => 'PostController@show',
     ]);
 
+    /**
+     * 各种验证码
+     */
+    $api->get('captcha', [
+        'as' => 'api.code.captcha',
+        'uses' => 'CodeController@captcha',
+    ]);
+    /**
+     * 需用户认证组
+     */
     $api->group(['middleware' => 'api.auth'], function ($api) {
         //获取当前用户信息
         $api->get('user', [
@@ -99,5 +109,12 @@ $api->version('admin_v1', [
             'as' => 'api.admin.show',
             'uses' => 'AdminController@adminShow'
         ]);
+        /**
+         * permission
+         */
+        //Abilities
+        $api->resource('abilities', 'AbilitiesController');
+        //role
+        $api->resource('roles', 'RolesController');
     });
 });

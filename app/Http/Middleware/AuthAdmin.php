@@ -17,7 +17,7 @@ class AuthAdmin
     public function handle($request, Closure $next)
     {
         $payload = JWTAuth::getPayload()->get();
-        if (!isset($payload['role']) || !$payload['role']) {
+        if (!isset($payload['is_admin']) || !$payload['is_admin']) {
             abort(401, '无访问权限');
         }
         return $next($request);

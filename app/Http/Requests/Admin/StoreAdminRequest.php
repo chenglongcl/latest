@@ -25,7 +25,7 @@ class StoreAdminRequest extends FormRequest
             'name' => 'required|string|unique:admins',
             'email' => 'required|email|unique:admins',
             'password' => 'required|min:6',
-            'role' => 'required|integer'
+            'is_admin' => 'required|integer'
         ];
     }
 
@@ -40,7 +40,7 @@ class StoreAdminRequest extends FormRequest
             'email.unique' => 'email已存在',
             'password.required' => '密码必须填写',
             'password.min' => '密码至少:min位',
-            'role.required' => '管理员角色必选',
+            'is_admin.required' => '管理员指定字段',
         ];
     }
 }
