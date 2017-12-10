@@ -17,6 +17,6 @@ return [
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
-    'maxAge' => 0,
+    'maxAge' => 3600,
 
 ];
