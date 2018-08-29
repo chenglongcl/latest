@@ -55,7 +55,7 @@ class UploadPicController extends Controller
             'path' => $upload_picture_conf['path'] . date('Ymd') . '/' . $filename
         ];
         $picture = Picture::create($attributes);
-        return $this->response->item($picture, new PictureTransformers());
+        return $this->responseItem($picture, new PictureTransformers());
     }
 
     /**

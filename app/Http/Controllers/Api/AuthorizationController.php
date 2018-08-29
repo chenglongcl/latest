@@ -46,9 +46,16 @@ class AuthorizationController extends Controller
         if (!$token = Auth::attempt($credentials)) {
             abort(401, '用户名或密码错误');
         }
-
         $authorization = new Authorization($token);
-        return $this->response->item($authorization, new AuthorizationTransformer())->setStatusCode(201);
+        $user = Auth::getUser();
+        $result = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'token' => $authorization->getToken(),
+            'expired_at' => $authorization->getExpiredAt(),
+            'refresh_expired_at' => $authorization->getRefreshExpiredAt()
+        ];
+        return $this->responseData($result, 0);
     }
 
     /**

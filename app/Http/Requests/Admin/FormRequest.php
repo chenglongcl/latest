@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Admin;
 
 use Dingo\Api\Http\FormRequest as DingoFormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FormRequest extends DingoFormRequest
 {
@@ -14,5 +16,10 @@ class FormRequest extends DingoFormRequest
     public function authorize()
     {
         return true;
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpException(422, $validator->errors()->first());
     }
 }

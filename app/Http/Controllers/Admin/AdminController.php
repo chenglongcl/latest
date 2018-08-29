@@ -7,7 +7,6 @@ use App\Http\Transformers\AdminTransformer;
 use App\Models\Admin;
 use App\Models\Authorization;
 use Auth;
-use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -22,12 +21,13 @@ class AdminController extends Controller
             'password' => app('hash')->make($input['password']),
         ];
         $admin = Admin::create($attributes);
-        $authorization = new Authorization(Auth::fromUser($admin));
-        $transformer = new AdminTransformer();
-        $transformer->setAuthorization($authorization)->setDefaultIncludes(['authorization']);
 
-        return $this->response->item($admin, $transformer)
-            ->setStatusCode(201);
+        $authorization = new Authorization(Auth::fromUser($admin));
+        $authorization_arr = $authorization->toArray();
+        $admin->token = $authorization_arr['token'];
+        $admin->expired_at = $authorization_arr['expired_at'];
+        $admin->refresh_expired_at = $authorization_arr['refresh_expired_at'];
+        return $this->responseItem($admin, new AdminTransformer());
     }
 
     public function adminShow()
@@ -35,6 +35,6 @@ class AdminController extends Controller
         /*if (Gate::allows('users_manage')) {
             return abort(401, trans('msg.no_abilitie'));
         }*/
-        return $this->response->item($this->user(), new AdminTransformer());
+        return $this->responseItem($this->user(), new AdminTransformer());
     }
 }

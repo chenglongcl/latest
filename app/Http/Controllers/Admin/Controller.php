@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as BaseController;
+use App\Util\Response\Responder;
 use Dingo\Api\Exception\ValidationHttpException;
-use Dingo\Api\Routing\Helpers;
+
 
 class Controller extends BaseController
 {
-    use Helpers;
+    use Responder;
 
     // 返回错误的请求
     protected function errorBadRequest($validator)

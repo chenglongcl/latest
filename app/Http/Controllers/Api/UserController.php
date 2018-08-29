@@ -31,21 +31,17 @@ class UserController extends Controller
         ];
         $user = User::create($attributes);
 
-        // 201 with location
-        $location = dingo_route('v1', 'users.show', $user->id);
-        // 让user默认返回token数据
         $authorization = new Authorization(Auth::fromUser($user));
-        $transformer = new UserTransformer();
-        $transformer->setAuthorization($authorization)->setDefaultIncludes(['authorization']);
-
-        return $this->response->item($user, $transformer)
-            ->header('Location', $location)
-            ->setStatusCode(201);
+        $authorization_arr = $authorization->toArray();
+        $user->token = $authorization_arr['token'];
+        $user->expired_at = $authorization_arr['expired_at'];
+        $user->refresh_expired_at = $authorization_arr['refresh_expired_at'];
+        return $this->responseItem($user, new UserTransformer());
     }
 
     public function userShow()
     {
-        return $this->response->item($this->user(), new UserTransformer());
+        return $this->responseItem($this->user(), new UserTransformer());
     }
 
     public function patch(PatchUserRequest $request)
@@ -70,11 +66,6 @@ class UserController extends Controller
         if ($attributes) {
             $user->where(['id' => $user->id])->update($attributes);
         }
-        // 201 with location
-        $location = dingo_route('v1', 'users.show', $user->id);
-
-        return $this->response->item($user, new UserTransformer())
-            ->header('Location', $location)
-            ->setStatusCode(201);
+        return $this->responseItem($user, new UserTransformer());
     }
 }

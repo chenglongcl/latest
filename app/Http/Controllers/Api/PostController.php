@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\StorePostRequest;
@@ -25,7 +24,7 @@ class PostController extends Controller
     public function index($cid = '')
     {
         $posts = $this->postService->index($cid);
-        return $this->response->paginator($posts, new PostTransformer());
+        return $this->responsePaginate($posts, new PostTransformer());
     }
 
     /**
@@ -52,7 +51,7 @@ class PostController extends Controller
             $attributes['user_id'] = $user->id;
             $post = $this->postService->store($attributes);
         }
-        return $this->response->item($post, new PostTransformer());
+        return $this->responseItem($post, new PostTransformer());
     }
 
     /**
@@ -64,7 +63,7 @@ class PostController extends Controller
     public function show($id)
     {
         $post = $this->postService->show($id);
-        return $this->response->item($post, new PostTransformer());
+        return $this->responseItem($post, new PostTransformer());
     }
 
     /**
