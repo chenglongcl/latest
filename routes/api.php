@@ -18,7 +18,7 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [], function ($api) {
-    
+
     /**
      * front
      */
@@ -68,6 +68,14 @@ $api->version('v1', [], function ($api) {
         $api->get('captcha', [
             'as' => 'api.code.captcha',
             'uses' => 'CodeController@captcha',
+        ]);
+        $api->get('demo1', [
+            'as' => 'api.demo.demo1',
+            'uses' => 'DemoController@demoOne',
+        ]);
+        $api->get('demo2', [
+            'as' => 'api.demo.demo2',
+            'uses' => 'DemoController@demoTwo',
         ]);
         /**
          * 需用户认证组

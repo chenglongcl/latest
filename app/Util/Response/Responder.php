@@ -51,6 +51,11 @@ trait  Responder
         ], 200);
     }
 
+    public function responseDataSimple(array $data)
+    {
+        return Response::json($data);
+    }
+
     public function responseSuccess($message = '操作成功', $code)
     {
         return Response::json([

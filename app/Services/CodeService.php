@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Captcha;
 
-class CodeService
+class CodeService extends BaseService
 {
     public function captcha()
     {

@@ -6,8 +6,16 @@ namespace App\Services;
 use App\Models\Post;
 
 
-class PostService
+class PostService extends BaseService
 {
+    private $post;
+
+    public function __construct(Post $post)
+    {
+        parent::__construct();
+        $this->post = $post;
+    }
+
     public function index($cid)
     {
         $where = ['posts.status' => 1];
@@ -19,7 +27,7 @@ class PostService
             'category.name as cname',
             'posts.*'
         ];
-        $result = Post::leftJoin('users', 'users.id', '=', 'posts.user_id')->
+        $result = $this->post->leftJoin('users', 'users.id', '=', 'posts.user_id')->
         leftJoin('category', 'category.id', '=', 'posts.cid')->
         where($where)->select($field)->paginate();
         return $result;
@@ -27,7 +35,7 @@ class PostService
 
     public function store($attributes)
     {
-        $result = Post::create($attributes);
+        $result = $this->post->create($attributes);
         return $result;
     }
 
@@ -42,7 +50,7 @@ class PostService
             'category.name as cname',
             'posts.*'
         ];
-        $result = Post::leftJoin('users', 'users.id', '=', 'posts.user_id')->
+        $result = $this->post->leftJoin('users', 'users.id', '=', 'posts.user_id')->
         leftJoin('category', 'category.id', '=', 'posts.cid')->
         where($where)->select($field)->firstOrFail();
         return $result;

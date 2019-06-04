@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Intervention\Image\Facades\Image;
 
-class PictureService
+class PictureService extends BaseService
 {
     /**
      * 图片缩略图
